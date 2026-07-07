@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Müofunktsionaalsed harjutused</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F3EF;
+    --paper-raised:#FFFFFF;
+    --ink:#2B2320;
+    --ink-soft:#5B534C;
+    --clay:#B85C56;
+    --clay-soft:#F0DAD8;
+    --moss:#6B8F71;
+    --moss-soft:#DDE7DD;
+    --slate:#5B7C99;
+    --slate-soft:#DBE4EB;
+    --sand:#C9BCAE;
+    --sand-soft:#EDE7E0;
+    --line:#E4DCD2;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Karla',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- Header / hero ---------- */
+  header.hero{
+    padding:56px 0 40px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-top{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+  .breath-orb{
+    width:76px;height:76px;border-radius:50%;
+    flex:none;
+    background:radial-gradient(circle at 35% 30%, #86A98C, var(--moss));
+    box-shadow:0 0 0 1px rgba(107,143,113,0.25);
+    animation:breathe 12s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{transform:scale(0.82);}
+    33%{transform:scale(1);}
+    66%{transform:scale(1);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .breath-orb{animation:none;}
+  }
+  h1.display{font-size:clamp(28px,4vw,40px);margin:0 0 6px;color:var(--ink);}
+  .eyebrow{
+    font-family:'Karla',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+    font-weight:600;
+  }
+  .intro{max-width:56ch;color:var(--ink-soft);font-size:15.5px;line-height:1.6;margin:16px 0 0;}
+
+  .progress-row{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .progress-track{
+    flex:1;
+    height:6px;
+    border-radius:4px;
+    background:var(--sand-soft);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--moss);
+    width:0%;
+    transition:width 0.4s ease;
+    border-radius:4px;
+  }
+  #progressLabel{white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  .add-btn{
+    flex:none;
+    margin-left:auto;
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:10px 16px;
+    border-radius:9px;
+    font-family:'Karla',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    transition:opacity 0.15s ease;
+  }
+  .add-btn:hover{opacity:0.85;}
+  .add-btn svg{width:14px;height:14px;}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:10;
+    background:rgba(247,243,239,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .controls-row{display:flex;gap:10px;align-items:center;}
+  .search{
+    flex:1;
+    padding:11px 14px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    font-family:'Karla',sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    outline:none;
+  }
+  .search:focus{border-color:var(--slate);}
+  .chips{
+    display:flex;gap:8px;margin-top:11px;
+    overflow-x:auto;padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:none;
+    padding:6px 13px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all 0.15s ease;
+  }
+  .chip:hover{border-color:var(--ink-soft);}
+  .chip.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper);
+  }
+
+  /* ---------- Sections ---------- */
+  main{padding:36px 0 80px;}
+  section.cat{margin-bottom:44px;}
+  section.cat.hidden{display:none;}
+  .cat-head{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+  }
+  .cat-dot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .cat-dot.clay{background:var(--clay);}
+  .cat-dot.moss{background:var(--moss);}
+  .cat-dot.slate{background:var(--slate);}
+  .cat-dot.sand{background:var(--sand);}
+  .cat-head h2{font-size:19px;margin:0;color:var(--ink);}
+  .cat-count{font-size:12.5px;color:var(--ink-soft);margin-left:auto;font-family:'Karla',sans-serif;}
+
+  .card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:10px;
+    transition:border-color 0.15s ease;
+  }
+  .card.hidden{display:none;}
+  .card:hover{border-color:var(--sand);}
+  .card.done{opacity:0.62;}
+  .card-top{
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .check-btn{
+    flex:none;
+    width:23px;height:23px;
+    border-radius:7px;
+    border:1.5px solid var(--sand);
+    background:var(--paper-raised);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:2px;
+    transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    padding:0;
+  }
+  .check-btn svg{width:13px;height:13px;opacity:0;transform:scale(0.6);transition:all 0.15s ease;}
+  .check-btn.checked{background:var(--moss);border-color:var(--moss);}
+  .check-btn.checked svg{opacity:1;transform:scale(1);}
+  .check-btn.bump{animation:bump 0.32s ease;}
+  @keyframes bump{50%{transform:scale(1.22);}}
+
+  .card-body{flex:1;min-width:0;}
+  .card-name-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .card-name{font-family:'Fraunces',serif;font-weight:600;font-size:16.5px;color:var(--ink);}
+  .card.done .card-name{text-decoration:line-through;text-decoration-color:var(--sand);}
+  .badge{
+    font-size:11.5px;font-weight:600;
+    color:var(--ink-soft);
+    background:var(--sand-soft);
+    padding:2px 9px;border-radius:100px;
+    white-space:nowrap;
+  }
+  .badge.custom{color:var(--clay);background:var(--clay-soft);}
+  .card-desc{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-top:6px;}
+  .card-desc:empty{display:none;}
+
+  .video-row{margin-top:10px;display:flex;align-items:center;gap:8px;}
+  .video-row svg{flex:none;width:14px;height:14px;color:var(--ink-soft);}
+  .video-input{
+    flex:1;
+    font-family:'Karla',sans-serif;
+    font-size:13px;
+    border:none;
+    border-bottom:1px dashed var(--line);
+    background:transparent;
+    color:var(--slate);
+    padding:3px 2px;
+    outline:none;
+  }
+  .video-input::placeholder{color:var(--sand);font-style:italic;}
+  .video-input:focus{border-bottom-color:var(--slate);}
+
+  .del-btn{
+    flex:none;
+    background:none;border:none;cursor:pointer;
+    color:var(--sand);
+    padding:2px;
+    display:flex;
+    transition:color 0.15s ease;
+  }
+  .del-btn:hover{color:var(--clay);}
+  .del-btn svg{width:15px;height:15px;}
+
+  .empty-state{
+    text-align:center;padding:60px 20px;color:var(--ink-soft);
+    display:none;
+  }
+  .empty-state.show{display:block;}
+
+  footer{
+    text-align:center;padding:30px 24px 50px;
+    color:var(--sand);
+    font-size:12.5px;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(43,35,32,0.42);
+    z-index:100;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 16px;
+    overflow-y:auto;
+  }
+  .modal-backdrop.show{display:flex;}
+  .modal{
+    background:var(--paper-raised);
+    border-radius:16px;
+    max-width:480px;width:100%;
+    padding:26px 26px 24px;
+    box-shadow:0 20px 50px rgba(43,35,32,0.25);
+  }
+  .modal h3{margin:0 0 4px;font-size:20px;}
+  .modal .modal-sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 20px;}
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;font-size:12.5px;font-weight:600;
+    color:var(--ink-soft);margin-bottom:5px;
+    text-transform:uppercase;letter-spacing:0.05em;
+  }
+  .field input[type=text], .field textarea, .field select{
+    width:100%;
+    padding:9px 11px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    font-family:'Karla',sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:var(--paper);
+    outline:none;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--slate);}
+  .field textarea{resize:vertical;min-height:60px;}
+  .field-row{display:flex;gap:10px;}
+  .field-row .field{flex:1;}
+  #newCatField{display:none;}
+  .modal-actions{
+    display:flex;justify-content:flex-end;gap:10px;margin-top:20px;
+  }
+  .btn{
+    padding:9px 17px;border-radius:8px;font-family:'Karla',sans-serif;
+    font-weight:600;font-size:13.5px;cursor:pointer;border:1px solid transparent;
+  }
+  .btn-ghost{background:none;border-color:var(--line);color:var(--ink-soft);}
+  .btn-ghost:hover{border-color:var(--sand);}
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-primary:hover{opacity:0.88;}
+  .required-mark{color:var(--clay);}
+  .form-error{
+    color:var(--clay);font-size:12.5px;margin:2px 0 0;
+    display:none;
+  }
+  .form-error.show{display:block;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="breath-orb" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Harjutuste kogumik</p>
+        <h1 class="display">Müofunktsionaalsed harjutused</h1>
+      </div>
+    </div>
+    <p class="intro">Huulte, keele, hingamise ja neelamise harjutused ühes kohas. Märgi tehtud harjutused ära, lisa videolingid ja täienda kogumikku enda uute harjutustega — kõik salvestub sinu brauserisse.</p>
+    <div class="progress-row">
+      <span id="progressLabel">0 / 0 tehtud</span>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="controls-row">
+      <input type="text" class="search" id="searchInput" placeholder="Otsi harjutust (nt “keel”, “hingamine”, “neelamine”)…">
+      <button class="add-btn" id="openAddModal">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Lisa harjutus
+      </button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div id="sections"></div>
+  <div class="empty-state" id="emptyState">Ühtegi harjutust ei leitud. Proovi teist märksõna.</div>
+</main>
+
+<footer>Müofunktsionaalsed harjutused &middot; isiklik kogumik</footer>
+
+<!-- Add exercise modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h3>Lisa uus harjutus</h3>
+    <p class="modal-sub">Lisatud harjutus salvestub sinu brauserisse ja ilmub kohe nimekirja.</p>
+    <div id="addForm">
+      <div class="field">
+        <label>Harjutuse nimi <span class="required-mark">*</span></label>
+        <input type="text" id="f-name" required>
+      </div>
+      <div class="field">
+        <label>Kategooria <span class="required-mark">*</span></label>
+        <select id="f-category">
+          <option value="__new__">+ Uus kategooria…</option>
+        </select>
+      </div>
+      <div class="field" id="newCatField">
+        <label>Uue kategooria nimi</label>
+        <input type="text" id="f-newcategory" placeholder="nt “Silmalihased”">
+      </div>
+      <div class="field">
+        <label>Kirjeldus</label>
+        <textarea id="f-desc" placeholder="Kuidas harjutust teha…"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Kordused / kestus</label>
+          <input type="text" id="f-reps" placeholder="nt “10 kordust”">
+        </div>
+        <div class="field">
+          <label>Videolink</label>
+          <input type="text" id="f-video" placeholder="nt YouTube link">
+        </div>
+      </div>
+      <p class="form-error" id="formError">Palun täida harjutuse nimi.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelAdd">Loobu</button>
+        <button type="button" class="btn btn-primary" id="submitAdd">Lisa kogumikku</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BUILTIN_EXERCISES = [{"name": "Huulte pigistamine", "category": "Huuled", "desc": "Pigista huuled tugevalt kokku ja hoia 5 sekundit.", "reps": "10 kordust"}, {"name": "Keele klotsutamine", "category": "Keelelihased", "desc": "Vajuta keele ots vastu suulagi ja tee klotsutav heli. Tugevdab keele eesmisi lihaseid.", "reps": "20 kordust"}, {"name": "Keele tagaosa tõstmine", "category": "Keele posterioorne osa", "desc": "Hoia keele ots all ja tõsta keele tagaosa vastu pehmet suulage. Hoia 5 sekundit.", "reps": "10 kordust"}, {"name": "Keele tõstmine", "category": "Keelelihased", "desc": "Tõsta keele ots ülemiste hammaste taha ja hoia 10 sekundit. Ära puuduta hambaid.", "reps": "10 × 10 sekundit"}, {"name": "Toruhuuled", "category": "Huuled", "desc": "Siruta huuled ettepoole nagu toru, hoia 5 sekundit, seejärel lõdvesta.", "reps": "10 kordust"}, {"name": "Gargariseerimine", "category": "Keele posterioorne osa", "desc": "Gargariseeri veega 20 sekundit. Aktiveerib keele posterioorset osa ja neelulihased.", "reps": "3 × 20 sek"}, {"name": "Teadlik neelamine", "category": "Neelamismuster", "desc": "Neela ilma hambaid kokku surumata. Keele ots peaks puudutama suulaed, mitte hambaid.", "reps": "10 kordust"}, {"name": "Neelamise harjutus veega", "category": "Neelamismuster", "desc": "Võta väike lonks vett, hoia suus ja neela ühe liigutusega. Jälgi, et keel ei läheks ette.", "reps": "5 kordust"}, {"name": "Põse sisemine massaaž", "category": "Põselihased", "desc": "Vajuta keelega põse sisse ja hoia 5 sekundit. Tee mõlemal küljel.", "reps": "10 kordust mõlemal küljel"}, {"name": "Ninaga hingamine", "category": "Hingamine", "desc": "Hinga teadlikult ainult läbi nina 2 minutit. Suu on suletud, keel on puhkeasendis.", "reps": "2 minutit"}, {"name": "4-4-4 hingamine", "category": "Hingamine", "desc": "Hinga sisse 4 sek, hoia  sek, hinga välja  sek. Rahustab ja õpetab kontrollitud hingamist.", "reps": "4 tsüklit"}, {"name": "Diafragma hingamine", "category": "Hingamine", "desc": "Selili pikalik, põlved kõverdatud või padi põlvede all. Vii keel puhkeasendisse. Käed pane kõhupeale. hingad sügavalt sisse (käed tõusevad kõhul) ja rahulikult välja (kõht langed koos kätega). 7-10 minutit.", "reps": "7-10 minutit"}, {"name": "Õhupalli puhumine + hoie I", "category": "Huuled", "desc": "Puhu õhupall pooltäis ning hoia huulte ja põskedega kinni. (Hammaste vahele õhupall ei jää). Hoia asendit nii pikalt kui saad.", "reps": "5"}, {"name": "Nööp", "category": "Huuled", "desc": "Nööp aseta huulte vahele, hoiad kinni samal ajal sikutad nööpi, hoiad 3 sekundit. Lõdvesta ära. Seejärel teed sama mõlema suurnurgaga.", "reps": "10"}, {"name": "Marshmellow twist", "category": "Huuled", "desc": "Vahukomm nööriotsas. Pane nööriots suulakke hoiad keelega kinni. Proovid vahukommi kätte saada.", "reps": "10"}, {"name": "K-K-K", "category": "Keele posterioorne osa", "desc": "Ütle K tähte nagu vares kraaksuks", "reps": "10 kordust"}, {"name": "Keele kauss", "category": "Neelamismuster", "desc": "", "reps": ""}, {"name": "Neelamine 1 elastikuga", "category": "Neelamismuster", "desc": "", "reps": ""}, {"name": "Keeleringid", "category": "Keelelihased", "desc": "Sule huuled. Tee keeleringe ühele poole ja siis teisele poole.", "reps": "10 kordust x 2"}, {"name": "Keelekomm", "category": "Keelelihased", "desc": "Vii keel põske ning siis teisele poole.", "reps": "30 kordust"}, {"name": "Keeleringid “8”", "category": "Keelelihased", "desc": "Sule huuled. Joonista keelega 8. Ühes suunas ja siis teises suunas.", "reps": "10 kordust x 2"}, {"name": "Keele vaakum", "category": "Keelelihased", "desc": "Vii keel üles vaakumiga. Nagu oleks keel suulakke liimitud.", "reps": "10 kordust x 5 sekundit"}, {"name": "Tiibade hääl", "category": "Keele asenditundlikkus ja koordinatsioon", "desc": "", "reps": ""}, {"name": "Elastik huulte vahel", "category": "Huuled", "desc": "Pane elastik või mõni paberitükk huulte vahele ning huuled suled vabalt. Hoiad elastikut huulte vahel sedasi.", "reps": "10 minutit"}, {"name": "Sõrmenukk + neelatus", "category": "Keele posterioorne osa", "desc": "Aseta väikese sõrme sõrmenukk hammaste vahele ning neelata.", "reps": "10 kordust"}, {"name": "Keeleots hammaste vahel neelatus (https://app.notion.com/p/neelatus-396277e9a7d2803fb666cb6e2c973ebe?pvs=21)", "category": "Keele posterioorne osa", "desc": "Hoia keeleotsa hammaste vahel kinni ning neelata", "reps": "10 kordust"}, {"name": "Keele 5 punkti viibutus", "category": "Keele asenditundlikkus ja koordinatsioon", "desc": "", "reps": ""}, {"name": "Ahv", "category": "Huuled", "desc": "Vii keel ülehuule all ning hoiad 5 sekundit. Seejärel alahuule all ning hoiad 5 sekundit.", "reps": "10 kordust."}, {"name": "Pähklivõi suulaes", "category": "Keelelihased", "desc": "Pähklivõi on suulakke kinni jäänud. Proovi see sealt kätte saada. Libista keelt mööda suulage edasi-tagasi.", "reps": "25 kordust"}, {"name": "Nutella suulaes", "category": "Keelelihased", "desc": "Nutella on suulakke kinni jäänud. Proovi nutella ära süüa. Libista keelt edasi-tagasi.", "reps": "25 kordust"}, {"name": "Kõrre puhumine", "category": "Keele posterioorne osa", "desc": "Puhu kõrre sisse, aga teine ots pane näpuga kinni. Hoiad survet 3 sekundit ja siis lõdvesta.", "reps": "10 kordust"}, {"name": "Vette puhumine kõrrega", "category": "Ninahingamise aktiveerimine", "desc": "", "reps": ""}, {"name": "Kõrrega paberid topsi ja tagasi", "category": "Ninahingamise aktiveerimine", "desc": "", "reps": ""}, {"name": "Huulte põristamine", "category": "Huuled", "desc": "Põrista huuli", "reps": "10 kordust"}, {"name": "5 punkti viibutus", "category": "Keele asenditundlikkus ja koordinatsioon", "desc": "", "reps": ""}, {"name": "Ülahuule massaaž + venitus", "category": "Massaaži ja lõdvestusvõtted", "desc": "", "reps": ""}, {"name": "Neelamine 2 elastikuga", "category": "Neelamismuster", "desc": "", "reps": ""}, {"name": "Neelamine 3 elastikuga", "category": "Neelamismuster", "desc": "", "reps": ""}, {"name": "Õhk põskedesse / KONN", "category": "Põselihased", "desc": "", "reps": ""}, {"name": "Vesi põskedesse", "category": "Põselihased", "desc": "", "reps": ""}, {"name": "Kurgu loputamine", "category": "Keele posterioorne osa", "desc": "Loputa veega 20 sekundit. Aktiveerib keele posterioorset osa ja neelulihased.", "reps": "20 sekundit"}, {"name": "Keele aeglane ärritus kurgusuunas", "category": "Keele posterioorne osa", "desc": "Soorita peegli ees. Lükka keel välja ning puuduta keelt puuspaatliga. Liigu aeglaselt kaugemale kurgusuunas. Teed vastavalt oma taluvusepiirile.", "reps": ""}, {"name": "Peenike ja paks keel", "category": "Keelelihased", "desc": "Lükka keel välja teravaks ning siis lõdvesta keel ära. Keel muutub kujult paksuks.", "reps": "10 kordust"}, {"name": "Huulte pigistamine ja pauk", "category": "Huuled", "desc": "Pigista huuled kokku ning hoia 5 sekundit, lase järsku lahti, tekiks hääl.", "reps": "10 kordust"}, {"name": "Õhupalli puhumine + hoie II", "category": "Huuled", "desc": "Puhu õhupall täis ning hoiad huultega kinni. Lase õhk lisaks ja põskedesse (punnis põsed). Nüüd kohtuvad õhk õhupallis ja õhk suu sees. Tekib vastupanu, tunned kurgu juures suulagi pingutab. Hingad rahulikult sisse ja välja 30 sekundit.", "reps": "5"}, {"name": "Ketas nööriotsas", "category": "Huuled", "desc": "Pane nööriotsa suulakke ning hoiad keelega kinni. Tõsta nööri ülespoole nagu sööksid spagetti.", "reps": "10"}, {"name": "Kork + K-K-K", "category": "Keele posterioorne osa", "desc": "Pane kork hammaste vahele ning ütle Ka-Ka-Ka nagu varesed kraaksuvad", "reps": "10 kordust"}, {"name": "Kork + neelatus", "category": "Keele posterioorne osa", "desc": "Aseta kork hammaste vahele ning neelata", "reps": "10 kordust"}, {"name": "Keele plaksud", "category": "Keelelihased", "desc": "Plaksuta keelt", "reps": "1 minutit"}];
+const CAT_COLOR = {"Hingamine": "moss", "Huuled": "clay", "Keelelihased": "slate", "Keele posterioorne osa": "slate", "Keele asenditundlikkus ja koordinatsioon": "clay", "Massaaži ja lõdvestusvõtted": "moss", "Neelamismuster": "slate", "Ninahingamise aktiveerimine": "moss", "Põselihased": "clay", "Muu": "sand"};
+const CAT_ORDER = ["Hingamine","Huuled","Keelelihased","Keele posterioorne osa","Keele asenditundlikkus ja koordinatsioon","Neelamismuster","Põselihased","Ninahingamise aktiveerimine","Massaaži ja lõdvestusvõtted","Muu"];
+const COLOR_CYCLE = ["clay","moss","slate","sand"];
+
+function slugify(s){
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+BUILTIN_EXERCISES.forEach((e,i)=>{ e.slug = slugify(e.name) + '-' + i; e.custom = false; });
+
+let STATE = {};
+try{ STATE = JSON.parse(localStorage.getItem('myo_state') || '{}'); }catch(e){ STATE = {}; }
+
+let CUSTOM = [];
+try{ CUSTOM = JSON.parse(localStorage.getItem('myo_custom') || '[]'); }catch(e){ CUSTOM = []; }
+
+function saveState(){ try{ localStorage.setItem('myo_state', JSON.stringify(STATE)); }catch(e){} }
+function saveCustom(){ try{ localStorage.setItem('myo_custom', JSON.stringify(CUSTOM)); }catch(e){} }
+
+function getEntry(slug){
+  if(!STATE[slug]) STATE[slug] = {done:false, video:''};
+  return STATE[slug];
+}
+
+const checkIcon = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const videoIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="M15 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-3.5l4 3.5v-9l-4 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+const trashIcon = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3a1 1 0 011-1h1a1 1 0 011 1v1.5M4.5 4.5l.5 8.5a1 1 0 001 1h4a1 1 0 001-1l.5-8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const sectionsEl = document.getElementById('sections');
+const chipsEl = document.getElementById('chips');
+const searchInput = document.getElementById('searchInput');
+
+let currentSearch = '';
+let currentCatFilter = '__all__';
+
+function allExercises(){
+  return BUILTIN_EXERCISES.concat(CUSTOM);
+}
+
+function colorFor(cat){
+  if(CAT_COLOR[cat]) return CAT_COLOR[cat];
+  const idx = Math.abs(hashCode(cat)) % COLOR_CYCLE.length;
+  return COLOR_CYCLE[idx];
+}
+function hashCode(s){ let h=0; for(let i=0;i<s.length;i++){ h = (h<<5)-h + s.charCodeAt(i); h|=0; } return h; }
+
+function orderedCategories(exercises){
+  const present = [...new Set(exercises.map(e=>e.category))];
+  const known = CAT_ORDER.filter(c=>present.includes(c));
+  const unknown = present.filter(c=>!CAT_ORDER.includes(c)).sort();
+  return known.concat(unknown);
+}
+
+function renderChips(exercises, grouped, cats){
+  chipsEl.innerHTML = '';
+  const allChip = document.createElement('button');
+  allChip.className = 'chip' + (currentCatFilter === '__all__' ? ' active' : '');
+  allChip.textContent = 'Kõik (' + exercises.length + ')';
+  allChip.dataset.cat = '__all__';
+  chipsEl.appendChild(allChip);
+
+  cats.forEach(cat=>{
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = cat + ' (' + grouped[cat].length + ')';
+    chip.dataset.cat = cat;
+    chipsEl.appendChild(chip);
+  });
+}
+
+function cardHTML(ex){
+  const entry = getEntry(ex.slug);
+  return `
+      <div class="card-top">
+        <button class="check-btn ${entry.done ? 'checked':''}" aria-label="Märgi tehtuks">${checkIcon}</button>
+        <div class="card-body">
+          <div class="card-name-row">
+            <span class="card-name">${escapeHTML(ex.name)}</span>
+            ${ex.reps ? '<span class="badge">'+escapeHTML(ex.reps)+'</span>' : ''}
+            ${ex.custom ? '<span class="badge custom">Lisatud</span>' : ''}
+          </div>
+          <div class="card-desc">${escapeHTML(ex.desc || '')}</div>
+          <div class="video-row">
+            ${videoIcon}
+            <input type="text" class="video-input" placeholder="Lisa videolink (nt YouTube)…" value="${escapeAttr(entry.video || '')}">
+            ${ex.custom ? '<button class="del-btn" title="Kustuta harjutus">'+trashIcon+'</button>' : ''}
+          </div>
+        </div>
+      </div>
+  `;
+}
+
+function escapeHTML(s){
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : s;
+  return d.innerHTML;
+}
+function escapeAttr(s){
+  return escapeHTML(s).replace(/"/g,'&quot;');
+}
+
+function renderAll(){
+  const exercises = allExercises();
+  const grouped = {};
+  exercises.forEach(e=>{ (grouped[e.category] = grouped[e.category] || []).push(e); });
+  const cats = orderedCategories(exercises);
+
+  renderChips(exercises, grouped, cats);
+
+  sectionsEl.innerHTML = '';
+  cats.forEach(cat=>{
+    const color = colorFor(cat);
+    const section = document.createElement('section');
+    section.className = 'cat';
+    section.id = 'sec-' + slugify(cat);
+
+    const head = document.createElement('div');
+    head.className = 'cat-head';
+    head.innerHTML = '<span class="cat-dot '+color+'"></span><h2>'+escapeHTML(cat)+'</h2><span class="cat-count">'+grouped[cat].length+' harjutust</span>';
+    section.appendChild(head);
+
+    grouped[cat].forEach(ex=>{
+      const card = document.createElement('div');
+      const entry = getEntry(ex.slug);
+      card.className = 'card' + (entry.done ? ' done' : '');
+      card.dataset.slug = ex.slug;
+      card.dataset.search = (ex.name + ' ' + (ex.desc||'')).toLowerCase();
+      card.innerHTML = cardHTML(ex);
+      section.appendChild(card);
+    });
+    sectionsEl.appendChild(section);
+  });
+
+  populateCategorySelect(cats);
+  applyFilter(currentSearch);
+  updateProgress();
+}
+
+function updateProgress(){
+  const total = allExercises().length;
+  const done = Object.values(STATE).filter(e=>e.done).length;
+  document.getElementById('progressLabel').textContent = done + ' / ' + total + ' tehtud';
+  document.getElementById('progressFill').style.width = (total ? (done/total*100) : 0) + '%';
+}
+
+function applyFilter(q){
+  currentSearch = q;
+  q = (q||'').trim().toLowerCase();
+  let anyVisible = false;
+  sectionsEl.querySelectorAll('section.cat').forEach(section=>{
+    let catHasVisible = false;
+    const catMatchesChip = currentCatFilter === '__all__' || section.id === 'sec-' + slugify(currentCatFilter);
+    section.querySelectorAll('.card').forEach(card=>{
+      const textMatch = !q || card.dataset.search.includes(q);
+      const visible = textMatch && catMatchesChip;
+      card.classList.toggle('hidden', !visible);
+      if(visible) catHasVisible = true;
+    });
+    section.classList.toggle('hidden', !catHasVisible);
+    if(catHasVisible) anyVisible = true;
+  });
+  document.getElementById('emptyState').classList.toggle('show', !anyVisible);
+}
+
+// ---- events: checkbox, video input, delete ----
+sectionsEl.addEventListener('click', (ev)=>{
+  const checkBtn = ev.target.closest('.check-btn');
+  if(checkBtn){
+    const card = checkBtn.closest('.card');
+    const slug = card.dataset.slug;
+    const entry = getEntry(slug);
+    entry.done = !entry.done;
+    saveState();
+    checkBtn.classList.toggle('checked', entry.done);
+    card.classList.toggle('done', entry.done);
+    checkBtn.classList.remove('bump'); void checkBtn.offsetWidth; checkBtn.classList.add('bump');
+    updateProgress();
+    return;
+  }
+  const delBtn = ev.target.closest('.del-btn');
+  if(delBtn){
+    const card = delBtn.closest('.card');
+    const slug = card.dataset.slug;
+    if(confirm('Kustutada see harjutus jäädavalt?')){
+      CUSTOM = CUSTOM.filter(e=>e.slug !== slug);
+      delete STATE[slug];
+      saveCustom(); saveState();
+      renderAll();
+    }
+  }
+});
+
+sectionsEl.addEventListener('input', (ev)=>{
+  const input = ev.target.closest('.video-input');
+  if(!input) return;
+  const card = input.closest('.card');
+  const entry = getEntry(card.dataset.slug);
+  entry.video = input.value;
+  saveState();
+});
+
+// ---- chips ----
+chipsEl.addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('.chip');
+  if(!btn) return;
+  currentCatFilter = btn.dataset.cat;
+  [...chipsEl.children].forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter(currentSearch);
+  if(currentCatFilter !== '__all__'){
+    const section = document.getElementById('sec-'+slugify(currentCatFilter));
+    if(section) section.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+searchInput.addEventListener('input', (ev)=>{
+  applyFilter(ev.target.value);
+});
+
+// ---- add exercise modal ----
+const modalBackdrop = document.getElementById('modalBackdrop');
+const addForm = document.getElementById('addForm');
+const catSelect = document.getElementById('f-category');
+const newCatField = document.getElementById('newCatField');
+
+function populateCategorySelect(cats){
+  const current = catSelect.value;
+  catSelect.innerHTML = '';
+  cats.forEach(cat=>{
+    const opt = document.createElement('option');
+    opt.value = cat; opt.textContent = cat;
+    catSelect.appendChild(opt);
+  });
+  const newOpt = document.createElement('option');
+  newOpt.value = '__new__'; newOpt.textContent = '+ Uus kategooria…';
+  catSelect.appendChild(newOpt);
+  if([...catSelect.options].some(o=>o.value===current)) catSelect.value = current;
+}
+
+catSelect.addEventListener('change', ()=>{
+  newCatField.style.display = catSelect.value === '__new__' ? 'block' : 'none';
+});
+
+function resetAddForm(){
+  ['f-name','f-newcategory','f-desc','f-reps','f-video'].forEach(id=>{
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('formError').classList.remove('show');
+}
+
+document.getElementById('openAddModal').addEventListener('click', ()=>{
+  resetAddForm();
+  newCatField.style.display = 'none';
+  modalBackdrop.classList.add('show');
+  document.getElementById('f-name').focus();
+});
+document.getElementById('cancelAdd').addEventListener('click', ()=>{
+  modalBackdrop.classList.remove('show');
+});
+modalBackdrop.addEventListener('click', (ev)=>{
+  if(ev.target === modalBackdrop) modalBackdrop.classList.remove('show');
+});
+
+function submitAddExercise(){
+  const name = document.getElementById('f-name').value.trim();
+  if(!name){
+    document.getElementById('formError').classList.add('show');
+    document.getElementById('f-name').focus();
+    return;
+  }
+  let category = catSelect.value;
+  if(category === '__new__'){
+    category = document.getElementById('f-newcategory').value.trim() || 'Muu';
+  }
+  const desc = document.getElementById('f-desc').value.trim();
+  const reps = document.getElementById('f-reps').value.trim();
+  const video = document.getElementById('f-video').value.trim();
+
+  const slug = slugify(name) + '-custom-' + Date.now();
+  const exercise = { name, category, desc, reps, slug, custom:true };
+  CUSTOM.push(exercise);
+  saveCustom();
+
+  STATE[slug] = { done:false, video: video };
+  saveState();
+
+  modalBackdrop.classList.remove('show');
+  renderAll();
+
+  currentSearch = '';
+  searchInput.value = '';
+  currentCatFilter = '__all__';
+  applyFilter('');
+  const section = document.getElementById('sec-' + slugify(category));
+  if(section) setTimeout(()=>section.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+}
+
+document.getElementById('submitAdd').addEventListener('click', submitAddExercise);
+document.getElementById('f-name').addEventListener('keydown', (ev)=>{
+  if(ev.key === 'Enter'){ ev.preventDefault(); submitAddExercise(); }
+});
+
+renderAll();
+</script>
+</body>
+</html>
